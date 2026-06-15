@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Baachii ❤️</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{height:100vh;background:black;overflow:hidden;display:flex;justify-content:center;align-items:center}
+.phone{
+position:relative;
+width:min(95vw,420px);
+height:min(95vh,850px);
+background:url('background/background.png') center/contain no-repeat;
+}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;text-align:center;padding:20px;z-index:2}
+.text{font-size:min(32px,7vw);font-weight:bold;line-height:1.4}
+button{margin-top:25px;padding:14px 30px;border:none;border-radius:30px;font-weight:bold;cursor:pointer}
+.fadeOut{animation:out 1s forwards}
+@keyframes out{to{opacity:0;transform:translateY(-80px)}}
+
+#balloonArea{position:absolute;inset:0;overflow:hidden}
+
+.balloon{
+width:44px;height:56px;
+position:absolute;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:34px;
+cursor:pointer;
+}
+
+.orbit{
+position:absolute;
+left:50%;
+top:50%;
+transform-origin:center center;
+animation:spin 18s linear infinite;
+}
+
+@keyframes spin{
+from{transform:rotate(0deg)}
+to{transform:rotate(360deg)}
+}
+
+.giftPopup{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+background:white;
+border-radius:18px;
+padding:15px;
+width:220px;
+text-align:center;
+z-index:999;
+}
+
+.giftPopup img{
+width:100px;
+max-height:100px;
+object-fit:contain;
+}
+
+.giftPopup h3{
+color:black;
+font-size:14px;
+margin-top:8px;
+}
+
+.final{color:#ff8fb1;padding:20px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="phone">
+<div class="overlay"></div>
+<div class="screen" id="screen">
+<div id="text" class="text">For My<br>Baachii ❤️</div>
+<button id="btn">Reveal</button>
+</div>
+</div>
+
+<script>
+const messages=[
+"For My<br>Baachii ❤️",
+"Pakka Kar Du<br>Reveal? 😏",
+"Soch Le...",
+"Ok Acha Acha<br>Kar Raha Hu 😂"
+];
+
+const btns=["Reveal","Haan","Reveal Kar","Final Reveal"];
+let current=0;
+
+btn.onclick=()=>{
+text.classList.add("fadeOut");
+setTimeout(()=>{
+current++;
+if(current<messages.length){
+text.classList.remove("fadeOut");
+text.innerHTML=messages[current];
+btn.innerHTML=btns[current];
+}else{
+startBalloons();
+}
+},1000);
+};
+
+function startBalloons(){
+document.getElementById('screen').innerHTML='<div id="balloonArea"></div>';
+const area=document.getElementById('balloonArea');
+
+const gifts=[
+["gifts/coke.jpg","A virtual Diet Coke for my Baachii 🥤❤️"],
+["gifts/chocolate1.jpg","Emergency chocolate unlocked 🍫"],
+["gifts/chocolate2.jpg","Another chocolate because one is never enough 🍫"],
+["gifts/teddy.jpg","Virtual teddy hug activated 🧸❤️"],
+["gifts/flower.jpg","A flower for my Baachii 🌸"],
+["gifts/heart.jpg","I am always here for you ❤️"]
+];
+
+let popped=0;
+
+const positions=[
+[-120,-220],
+[120,-220],
+[170,0],
+[120,220],
+[-120,220],
+[-170,0]
+];
+
+for(let i=0;i<6;i++){
+
+let orbit=document.createElement('div');
+orbit.className='orbit';
+orbit.style.animationDuration=(14+i*2)+'s';
+
+let balloon=document.createElement('div');
+balloon.className='balloon';
+balloon.innerHTML='🎈';
+
+balloon.style.left=positions[i][0]+'px';
+balloon.style.top=positions[i][1]+'px';
+
+balloon.onclick=()=>{
+showGift(gifts[i][0],gifts[i][1]);
+orbit.remove();
+popped++;
+if(popped===6)setTimeout(showFinal,3200);
+};
+
+orbit.appendChild(balloon);
+area.appendChild(orbit);
+}
+}
+
+function showGift(img,msg){
+const p=document.createElement('div');
+p.className='giftPopup';
+p.innerHTML='<img src="'+img+'"><h3>'+msg+'</h3>';
+document.getElementById('balloonArea').appendChild(p);
+setTimeout(()=>p.remove(),3000);
+}
+
+function showFinal(){
+document.getElementById('screen').innerHTML=
+'<div class="final"><h1>❤️ Baachii ❤️</h1><br>'+
+'I know these days<br>can be uncomfortable.<br><br>'+
+'So I wanted to make<br>something that might<br>make you smile.<br><br>'+
+'Take care of yourself ❤️<br><br>'+
+'Drink water 🥤<br><br>'+
+'Get some rest 😴<br><br>'+
+'And remember...<br><br>'+
+'I am always here<br>for you ❤️</div>';
+}
+</script>
+</body>
+</html>
